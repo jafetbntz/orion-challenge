@@ -35,7 +35,8 @@ export class NewAddressComponent {
 
     const newAddress = {
       firstLine: this.addressForm.value.firstLine,
-      secondLine: this.addressForm.value.secondLine
+      secondLine: this.addressForm.value.secondLine,
+      customerId: this._customerId
 
     } as IAddress;
 

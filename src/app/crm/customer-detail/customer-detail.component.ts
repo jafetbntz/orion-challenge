@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ICustomer } from '../../core/models/customer.interface';
 import { CustomersService } from '../../core/services/customers.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { AddressService } from '../../core/services/address.service';
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss'
 })
-export class CustomerDetailComponent implements OnInit {
+export class CustomerDetailComponent {
   public customer: ICustomer = {} as ICustomer;
   public addresses: IAddress[] = [];
 
@@ -35,15 +35,15 @@ export class CustomerDetailComponent implements OnInit {
       this._customerId = p['id'];
     })
   }
-  public ngOnInit() {
+  public ngAfterViewInit() {
+
     this.addressService.getByCustomer(this._customerId).then(a => {
       this.addresses = a;
     });
 
-    this.customerService.getById(this._customerId).then( (data) => {
+    this.customerService.getById(this._customerId).then((data) => {
       if (data) {
         this.customer = data;
-        console.log("🚀 ~ CustomerDetailComponent ~ this.customerService.getById ~ data:", data);
 
         this.customerForm.setValue({
           firstName: this._nullOREmpty(this.customer.firstName),
@@ -52,31 +52,43 @@ export class CustomerDetailComponent implements OnInit {
           email: this._nullOREmpty(this.customer.email),
         });
       }
-    }); 
+    });
 
   }
 
-  public update() {}
+  public async update() { 
 
-  public deleteAddress(id: number) {
-    this.addressService.delete(id);
+
+    this.customer.firstName =  this.customerForm.value.firstName;
+    this.customer.lastName = this.customerForm.value.lastName;
+    this.customer.phone = this.customerForm.value.phone;
+    this.customer.email = this.customerForm.value.email;
+
+
+    const result = await this.customerService.update(this.customer);
+
+    if (result.success) {
+      this.router.navigate(["customers", this.customer.id]);
+    }
+  }
+
+  public async deleteAddress(id: number) {
+    await this.addressService.delete(id);
+    this.addresses = await this.addressService.getByCustomer(this._customerId);
   }
 
   public newAddress() {
     this.router.navigate(["customers", this._customerId, "new-address"]);
   }
 
-  private _nullOREmpty(value: string | undefined): string  {
-    console.log("🚀 ~ CustomerDetailComponent ~ _nullOREmpty ~ value:", value);
-    
+  private _nullOREmpty(value: string | undefined | null): string {
+
     if (!value) {
       return "";
     }
 
     return value;
   }
-
-
 
 
 }
