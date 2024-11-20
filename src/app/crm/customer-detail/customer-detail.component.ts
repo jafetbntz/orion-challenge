@@ -77,6 +77,11 @@ export class CustomerDetailComponent {
     this.addresses = await this.addressService.getByCustomer(this._customerId);
   }
 
+  public async deleteCustomer() {
+    await this.customerService.delete(this._customerId);
+    this.router.navigate(["customers"]);
+  }
+  
   public newAddress() {
     this.router.navigate(["customers", this._customerId, "new-address"]);
   }

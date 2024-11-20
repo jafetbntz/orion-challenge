@@ -72,10 +72,13 @@ export class AddressService {
       .sort( (a,b) => {
         return a<b ? 1: -1;
       });
-    const lastID = ids[0];
-    if (lastID) {
+
+    if (ids.length == 0) {
       return 1;
     }
+
+    const lastID = ids[0];
+
     return lastID +1;
   }
 

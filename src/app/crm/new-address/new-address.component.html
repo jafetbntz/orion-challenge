@@ -14,6 +14,8 @@
             <div class="columns twelve">
                 <label for="first-line">First Line: </label>
                 <input class="u-full-width" id="first-line" type="text" formControlName="firstLine">
+                <span class="text-danger" *ngIf="hasError('firstLine')"> First Line is required </span>
+
             </div>
         </div>
         <div class="row">

@@ -18,7 +18,7 @@ export class CustomersService {
   }
 
   public async getCustomers(): Promise<ICustomer[]> {
-    const result =  this.storage.get(this.CUSTOMERS_KEY) as ICustomer[];
+    const result = this.storage.get(this.CUSTOMERS_KEY) as ICustomer[];
     if (!result) {
       return [];
     }
@@ -31,6 +31,8 @@ export class CustomersService {
   public async save(newCustomer: ICustomer): Promise<{ success: boolean, id?: number }> {
     newCustomer.name = `${newCustomer.firstName} ${newCustomer.lastName}`;
     newCustomer.id = await this.getNextId();
+    console.log("🚀 ~ CustomersService ~ save ~ newCustomer:", newCustomer);
+    
     this._customers.push(newCustomer);
     this._updateStorage();
 
@@ -46,6 +48,11 @@ export class CustomersService {
       .sort((a, b) => {
         return a < b ? 1 : -1;
       });
+
+    if (ids.length == 0) {
+      return 1;
+    }
+
     const lastID = ids[0];
     return lastID + 1;
   }
@@ -63,11 +70,11 @@ export class CustomersService {
   }
 
   public async update(customer: ICustomer): Promise<{ success: boolean }> {
-    
+
     customer.name = `${customer.firstName} ${customer.lastName}`;
 
     this._customers = await this.getCustomers();
-    const idx  = this._customers.map(c => c.id).indexOf(customer.id);
+    const idx = this._customers.map(c => c.id).indexOf(customer.id);
     if (idx == -1) {
       return {
         success: false
@@ -83,5 +90,20 @@ export class CustomersService {
 
   }
 
+  public async delete(id: any) {
 
+    this._customers = await this.getCustomers();
+    this._customers = this._customers.filter(a => {
+      return a.id != id;
+    });
+    this._updateStorage();
+
+    return true;
+
+
+  }
 }
+
+
+
+

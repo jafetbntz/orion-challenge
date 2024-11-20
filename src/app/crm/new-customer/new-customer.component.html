@@ -14,25 +14,33 @@
             <div class="columns six">
                 <label for="first-name">First Name: </label>
                 <input class="u-full-width" id="first-name" type="text" formControlName="firstName">
+
+                <span class="text-danger" *ngIf="hasError('firstName')"> First Name is required </span>
             </div>
 
             <div class="columns six">
                 <label for="last-name">Last Name: </label>
                 <input class="u-full-width" id="last-name" type="text" formControlName="lastName">
+                <span class="text-danger" *ngIf="hasError('lastName')"> Last Name is required </span>
+
             </div>
         </div>
         <div class="row">
             <div class="columns six">
                 <label for="email">Email: </label>
-                <input class="u-full-width" id="email" type="text" formControlName="email">       
+                <input class="u-full-width" id="email" type="text" formControlName="email">     
+                <span class="text-danger" *ngIf="hasError('email')"> Email is required </span>
+  
             </div>
 
             <div class="columns six">
                 <label for="phone">Phone: </label>
                 <input class="u-full-width" id="phone" type="text" formControlName="phone">
+                <span class="text-danger" *ngIf="hasError('phone')"> Phone is required </span>
+
             </div>
         </div>
     </form>
-    <button class="button-primary u-full-width" (click)="save()">Save</button>
+    <button  class="button-primary u-full-width" (click)="save()">Save</button>
 
 </div>
