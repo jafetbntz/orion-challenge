@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICustomer } from '../../core/models/customer.interface';
 import { CustomersService } from '../../core/services/customers.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IAddress } from '../../core/models/address.interface';
 import { AddressService } from '../../core/services/address.service';
@@ -28,7 +28,8 @@ export class CustomerDetailComponent implements OnInit {
   constructor(
     private customerService: CustomersService,
     private addressService: AddressService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.route.params.subscribe(p => {
       this._customerId = p['id'];
@@ -61,7 +62,9 @@ export class CustomerDetailComponent implements OnInit {
     this.addressService.delete(id);
   }
 
-  public newAddress() {}
+  public newAddress() {
+    this.router.navigate(["customers", this._customerId, "new-address"]);
+  }
 
   private _nullOREmpty(value: string | undefined): string  {
     console.log("🚀 ~ CustomerDetailComponent ~ _nullOREmpty ~ value:", value);

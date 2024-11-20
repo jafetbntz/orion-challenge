@@ -48,5 +48,29 @@ export class AddressService {
       resolve(true);
 
     });
-  } 
+  }
+  
+  public async save(newAddress: IAddress): Promise<{ success: boolean, id?: number}> {
+
+      newAddress.id = await this.getNextId();
+
+      this._addresses.push(newAddress);
+  
+      return {
+        success: true, id: newAddress.id
+      };
+
+  }
+
+  public async getNextId(): Promise<number> {
+    const ids = this._addresses
+      .map(a => a.id)
+      .sort( (a,b) => {
+        return a>b ? 1: -1;
+      });
+    const lastID = ids[0];
+    return lastID +1;
+  }
+
+
 }
