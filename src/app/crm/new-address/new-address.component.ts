@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddressService } from '../../core/services/address.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAddress } from '../../core/models/address.interface';
@@ -21,8 +21,7 @@ export class NewAddressComponent {
   constructor(
     private addresService: AddressService,
     private router: Router,
-    private route: ActivatedRoute,
-    private fb: FormBuilder
+    private route: ActivatedRoute
   ) {
 
 

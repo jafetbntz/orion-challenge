@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { CustomersService } from '../../core/services/customers.service';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICustomer } from '../../core/models/customer.interface';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-new-customer',
@@ -19,9 +18,7 @@ export class NewCustomerComponent {
 
   constructor(
     private customerService: CustomersService,
-    private router: Router,
-    private fb: FormBuilder
-  ) {
+    private router: Router) {
     this.customerForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.min(5)]),
       lastName: new FormControl('', [Validators.required,  Validators.min(1)]),
@@ -31,14 +28,6 @@ export class NewCustomerComponent {
   
   }
 
-  public isFormInvalid(): boolean {
-    if (this.customerForm.pristine) {
-      return true;
-    }
-
-    return this.customerForm.errors != null;
-  }
-
   public async save() {
     this.customerForm.markAllAsTouched();
     this.customerForm.markAsDirty();
@@ -46,7 +35,6 @@ export class NewCustomerComponent {
     if (!this.customerForm.valid) {
       return;
     }
-
 
     const newCustomer = {
       firstName: this.customerForm.value.firstName,
